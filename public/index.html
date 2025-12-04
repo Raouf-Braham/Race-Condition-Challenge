@@ -1,0 +1,410 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>NIRD Security Lab - Démonstration de Vulnérabilité</title>
+  <link rel="stylesheet" href="style.css">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts. googleapis.com/css2?family=Space+Grotesk:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+</head>
+<body>
+  <div class="app-container">
+    <!-- Header -->
+    <header class="header">
+      <div class="header-content">
+        <div class="logo">
+          <span class="logo-icon">🛡️</span>
+          <div class="logo-text-container">
+            <span class="logo-text">NIRD</span>
+            <span class="logo-subtext">Security Lab</span>
+          </div>
+          <span class="logo-badge">ÉDUCATIF</span>
+        </div>
+        <nav class="header-nav">
+          <a href="https://nird.forge.apps.education.fr/" target="_blank" class="nav-link">
+            <span>📚</span> Découvrir NIRD
+          </a>
+          <div class="header-status">
+            <span class="status-indicator vulnerable"></span>
+            <span class="status-text">Mode Démonstration</span>
+          </div>
+        </nav>
+      </div>
+    </header>
+
+    <!-- Hero Section -->
+    <section class="hero-section">
+      <div class="hero-content">
+        <div class="hero-badge">🏰 Le Village Numérique Résistant</div>
+        <h1 class="hero-title">
+          Comprendre les failles pour mieux <span class="highlight">résister</span>
+        </h1>
+        <p class="hero-description">
+          Dans ce laboratoire interactif, découvrez comment une <strong>race condition</strong> 
+          peut compromettre un système mal conçu, et apprenez les bonnes pratiques 
+          pour construire des applications <strong>robustes et durables</strong>.
+        </p>
+        <div class="hero-stats">
+          <div class="hero-stat">
+            <span class="hero-stat-icon">🔓</span>
+            <span class="hero-stat-label">Faille démontrée</span>
+            <span class="hero-stat-value">Race Condition</span>
+          </div>
+          <div class="hero-stat">
+            <span class="hero-stat-icon">🎯</span>
+            <span class="hero-stat-label">Objectif</span>
+            <span class="hero-stat-value">Sensibilisation</span>
+          </div>
+          <div class="hero-stat">
+            <span class="hero-stat-icon">🛡️</span>
+            <span class="hero-stat-label">Solution</span>
+            <span class="hero-stat-value">Transactions Atomiques</span>
+          </div>
+        </div>
+      </div>
+      <div class="hero-illustration">
+        <div class="village-scene">
+          <div class="village-house house-1">🏠</div>
+          <div class="village-house house-2">🏫</div>
+          <div class="village-house house-3">🏛️</div>
+          <div class="village-shield">🛡️</div>
+          <div class="attack-arrows">
+            <span class="arrow arrow-1">⚡</span>
+            <span class="arrow arrow-2">⚡</span>
+            <span class="arrow arrow-3">⚡</span>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Alert Banner -->
+    <div class="alert-banner">
+      <span class="alert-icon">🎓</span>
+      <span class="alert-text">
+        <strong>Objectif pédagogique :</strong> Ce simulateur contient une faille de sécurité 
+        <strong>intentionnelle</strong> pour démontrer l'importance de la qualité du code 
+        dans les systèmes numériques éducatifs.
+      </span>
+    </div>
+
+    <!-- Main Content -->
+    <main class="main-content">
+      <!-- Context Section -->
+      <section class="context-section">
+        <div class="context-card">
+          <div class="context-icon">🤔</div>
+          <h3>Pourquoi ce laboratoire ?</h3>
+          <p>
+            Les Big Tech imposent souvent des solutions fermées et opaques. 
+            Comprendre les failles de sécurité permet aux établissements scolaires 
+            de faire des choix éclairés et de privilégier des <strong>solutions libres, 
+            auditables et durables</strong>.
+          </p>
+        </div>
+        <div class="context-card">
+          <div class="context-icon">🎯</div>
+          <h3>Le scénario</h3>
+          <p>
+            Simulez un système de gestion de <strong>crédits informatiques</strong> scolaires.  
+            Chaque établissement dispose d'un budget pour installer des logiciels.  
+            Découvrez comment une faille peut permettre de dépenser plus que prévu ! 
+          </p>
+        </div>
+        <div class="context-card">
+          <div class="context-icon">💡</div>
+          <h3>Ce que vous apprendrez</h3>
+          <p>
+            Les concepts de <strong>race condition</strong>, <strong>TOCTOU</strong>, 
+            et les bonnes pratiques de développement sécurisé applicables 
+            aux logiciels libres éducatifs. 
+          </p>
+        </div>
+      </section>
+
+      <!-- Stats Bar -->
+      <section class="stats-bar">
+        <div class="stat-item">
+          <span class="stat-label">💰 Budget total système</span>
+          <span class="stat-value" id="totalBalance">2000 crédits</span>
+        </div>
+        <div class="stat-item">
+          <span class="stat-label">📊 Budget attendu</span>
+          <span class="stat-value expected">2000 crédits</span>
+        </div>
+        <div class="stat-item anomaly-indicator" id="anomalyIndicator">
+          <span class="stat-label">⚠️ Anomalie détectée</span>
+          <span class="stat-value anomaly" id="anomalyAmount">0 crédits</span>
+        </div>
+        <button class="btn btn-reset" onclick="resetDatabase()">
+          🔄 Réinitialiser le système
+        </button>
+      </section>
+
+      <!-- Accounts Section -->
+      <section class="accounts-section">
+        <h2 class="section-title">
+          <span class="title-icon">🏫</span>
+          Établissements scolaires
+          <span class="section-subtitle">Budget en crédits logiciels</span>
+        </h2>
+        <div class="accounts-grid" id="accountsGrid">
+          <!-- Accounts will be loaded here -->
+        </div>
+      </section>
+
+      <!-- Transfer Section -->
+      <section class="transfer-section">
+        <div class="transfer-card">
+          <h2 class="section-title">
+            <span class="title-icon">📤</span>
+            Transférer des crédits
+          </h2>
+          <p class="transfer-description">
+            Simulez un transfert de budget entre établissements.  
+            Ce formulaire fonctionne normalement (une requête à la fois). 
+          </p>
+          <form class="transfer-form" id="transferForm">
+            <div class="form-row">
+              <div class="form-group">
+                <label for="fromAccount">De (établissement source)</label>
+                <select id="fromAccount" required>
+                  <option value="">Sélectionner... </option>
+                </select>
+              </div>
+              <div class="form-arrow">→</div>
+              <div class="form-group">
+                <label for="toAccount">Vers (établissement cible)</label>
+                <select id="toAccount" required>
+                  <option value="">Sélectionner...</option>
+                </select>
+              </div>
+            </div>
+            <div class="form-group">
+              <label for="amount">Montant (crédits)</label>
+              <input type="number" id="amount" min="1" step="1" placeholder="100" required>
+            </div>
+            <button type="submit" class="btn btn-primary btn-transfer">
+              <span class="btn-text">Transférer les crédits</span>
+              <span class="btn-loader" hidden></span>
+            </button>
+          </form>
+        </div>
+
+        <!-- Exploit Section -->
+        <div class="exploit-card">
+          <div class="exploit-header">
+            <h2 class="section-title danger">
+              <span class="title-icon">⚡</span>
+              Zone de démonstration
+            </h2>
+            <span class="exploit-badge">FAILLE TOCTOU</span>
+          </div>
+          <p class="exploit-description">
+            <strong>🎯 Objectif :</strong> Démontrer qu'un système mal conçu peut être exploité 
+            par des requêtes simultanées.  Le <strong>Lycée Carnot</strong> (1000 crédits) 
+            va tenter de transférer plus qu'il ne possède vers le <strong>Collège Résistance</strong>. 
+          </p>
+          <div class="exploit-scenario">
+            <div class="scenario-step">
+              <span class="step-number">1</span>
+              <span class="step-text">10 requêtes vérifient le solde simultanément</span>
+            </div>
+            <div class="scenario-step">
+              <span class="step-number">2</span>
+              <span class="step-text">Toutes voient 1000 crédits disponibles</span>
+            </div>
+            <div class="scenario-step">
+              <span class="step-number">3</span>
+              <span class="step-text">Toutes effectuent le transfert → Budget négatif !</span>
+            </div>
+          </div>
+          <div class="exploit-config">
+            <div class="form-group">
+              <label for="exploitRequests">Nombre de requêtes</label>
+              <input type="number" id="exploitRequests" value="10" min="2" max="50">
+            </div>
+            <div class="form-group">
+              <label for="exploitAmount">Crédits par requête</label>
+              <input type="number" id="exploitAmount" value="100" min="1">
+            </div>
+          </div>
+          <button class="btn btn-danger btn-exploit" onclick="runExploit()">
+            <span class="btn-icon">🚀</span>
+            <span class="btn-text">Lancer la démonstration</span>
+          </button>
+          <div class="exploit-results" id="exploitResults" hidden>
+            <h3>📊 Résultats de l'exploitation</h3>
+            <div class="results-content" id="resultsContent"></div>
+          </div>
+        </div>
+      </section>
+
+      <!-- Transactions Section -->
+      <section class="transactions-section">
+        <h2 class="section-title">
+          <span class="title-icon">📜</span>
+          Journal des transferts
+          <span class="transaction-count" id="transactionCount">0</span>
+        </h2>
+        <div class="transactions-table-container">
+          <table class="transactions-table">
+            <thead>
+              <tr>
+                <th>ID</th>
+                <th>Source</th>
+                <th>Destination</th>
+                <th>Crédits</th>
+                <th>Date</th>
+                <th>Status</th>
+              </tr>
+            </thead>
+            <tbody id="transactionsBody">
+              <!-- Transactions will be loaded here -->
+            </tbody>
+          </table>
+          <div class="empty-state" id="emptyTransactions">
+            <span class="empty-icon">📭</span>
+            <span class="empty-text">Aucun transfert enregistré</span>
+          </div>
+        </div>
+      </section>
+
+      <!-- Educational Section -->
+      <section class="education-section">
+        <div class="education-header">
+          <h2 class="section-title">
+            <span class="title-icon">📚</span>
+            Comprendre et se protéger
+          </h2>
+          <p class="education-intro">
+            La démarche <strong>NIRD</strong> encourage l'utilisation de logiciels libres 
+            dont le code est auditable.  Voici comment éviter cette faille :
+          </p>
+        </div>
+        <div class="education-grid">
+          <div class="education-card vulnerability">
+            <div class="card-header">
+              <span class="card-icon">🔓</span>
+              <h3>La vulnérabilité TOCTOU</h3>
+            </div>
+            <p>
+              <strong>Time Of Check To Time Of Use</strong> : une race condition 
+              se produit quand le système vérifie une condition, puis l'utilise 
+              plus tard, laissant une fenêtre d'exploitation. 
+            </p>
+            <div class="code-example">
+              <code>
+                <span class="comment">// ❌ Code vulnérable</span><br>
+                <span class="keyword">if</span> (solde >= montant) {<br>
+                &nbsp;&nbsp;<span class="comment">// ⏰ Fenêtre critique !</span><br>
+                &nbsp;&nbsp;solde = solde - montant;<br>
+                }
+              </code>
+            </div>
+          </div>
+          <div class="education-card solution">
+            <div class="card-header">
+              <span class="card-icon">🛡️</span>
+              <h3>La solution : Transactions atomiques</h3>
+            </div>
+            <p>
+              Les <strong>transactions SQL</strong> garantissent que toutes les opérations 
+              s'exécutent ensemble ou pas du tout. C'est une bonne pratique 
+              enseignée dans les formations au libre.
+            </p>
+            <div class="code-example">
+              <code>
+                <span class="comment">// ✅ Code sécurisé</span><br>
+                <span class="keyword">BEGIN TRANSACTION</span>;<br>
+                <span class="keyword">UPDATE</span> SET solde = solde - 100<br>
+                &nbsp;&nbsp;<span class="keyword">WHERE</span> solde >= 100;<br>
+                <span class="keyword">COMMIT</span>;
+              </code>
+            </div>
+          </div>
+          <div class="education-card nird">
+            <div class="card-header">
+              <span class="card-icon">🏫</span>
+              <h3>Le lien avec NIRD</h3>
+            </div>
+            <p>
+              Les logiciels propriétaires sont des <strong>boîtes noires</strong>. 
+              Impossible de vérifier leur sécurité.  Les <strong>logiciels libres</strong> 
+              permettent l'audit du code par la communauté éducative.
+            </p>
+            <ul class="nird-benefits">
+              <li>✅ Code auditable et transparent</li>
+              <li>✅ Corrections rapides par la communauté</li>
+              <li>✅ Indépendance vis-à-vis des Big Tech</li>
+              <li>✅ Formation des élèves au code réel</li>
+            </ul>
+          </div>
+        </div>
+      </section>
+
+      <!-- NIRD CTA Section -->
+      <section class="nird-cta-section">
+        <div class="nird-cta-content">
+          <div class="nird-cta-icon">🏰</div>
+          <h2>Rejoignez le Village Numérique Résistant !</h2>
+          <p>
+            La démarche NIRD accompagne les établissements scolaires vers un 
+            <strong>Numérique Inclusif, Responsable et Durable</strong>. 
+            Ensemble, construisons l'école numérique de demain.
+          </p>
+          <div class="nird-cta-buttons">
+            <a href="https://nird.forge.apps.education. fr/" target="_blank" class="btn btn-nird">
+              <span>🌐</span> Découvrir NIRD
+            </a>
+            <a href="https://forge.apps.education.fr/" target="_blank" class="btn btn-forge">
+              <span>🔧</span> La Forge Éducative
+            </a>
+          </div>
+          <div class="nird-pillars">
+            <div class="pillar">
+              <span class="pillar-icon">♿</span>
+              <span class="pillar-name">Inclusif</span>
+            </div>
+            <div class="pillar">
+              <span class="pillar-icon">⚖️</span>
+              <span class="pillar-name">Responsable</span>
+            </div>
+            <div class="pillar">
+              <span class="pillar-icon">♻️</span>
+              <span class="pillar-name">Durable</span>
+            </div>
+          </div>
+        </div>
+      </section>
+    </main>
+
+    <!-- Footer -->
+    <footer class="footer">
+      <div class="footer-content">
+        <div class="footer-logo">
+          <span>🛡️</span>
+          <span>NIRD Security Lab</span>
+        </div>
+        <p class="footer-text">
+          Projet éducatif réalisé dans le cadre de la 
+          <strong>Nuit de l'Info 2025</strong>
+          <span class="separator">|</span>
+          Sous licence libre
+        </p>
+        <div class="footer-links">
+          <a href="https://nird.forge.apps.education. fr/" target="_blank">NIRD</a>
+          <a href="https://forge.apps.education.fr/" target="_blank">Forge Éducative</a>
+          <a href="https://www.nuitdelinfo.com/" target="_blank">Nuit de l'Info</a>
+        </div>
+      </div>
+    </footer>
+
+    <!-- Toast Notifications -->
+    <div class="toast-container" id="toastContainer"></div>
+  </div>
+
+  <script src="app.js"></script>
+</body>
+</html>
